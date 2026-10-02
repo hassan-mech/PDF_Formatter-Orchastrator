@@ -1,0 +1,28 @@
+# Output / generated folders
+input/
+output/
+finished/
+extracted/
+renders/
+temp/
+backup/
+2/
+runs/*/build/
+runs/*/extract/
+runs/*/qa/*.png
+runs/*/qa/*.pdf
+runs/**/*.docx
+runs/**/*.pdf
+
+# File types
+*.pdf
+*.docx
+*.doc
+*.xlsx
+*.png
+*.jpg
+*.jpeg
+*.zip
+~$*
+__pycache__/
+*.pyc

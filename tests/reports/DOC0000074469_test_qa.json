@@ -1,0 +1,59 @@
+{
+  "original_pdf": "input\\DOC0000074469-Non-Parsable-en-US#FPREP_DXEGTK#.pdf",
+  "output_docx": "output\\DOC0000074469-Non-Parsable-en-US#FPREP_DXEGTK#.docx",
+  "timestamp": "2026-10-02T14:53:36.211713",
+  "overall_pass": false,
+  "overall_score": 0.7498,
+  "checks": [
+    {
+      "name": "Visual (pixel rendering)",
+      "passed": true,
+      "score": 0.8519,
+      "details": "Compared 7/7 pages (PDF=7, DOCX=7). Avg sim=85.2%, penalized score=85.2%. Failed pages: [1, 4, 5].",
+      "warnings": [],
+      "fix_hints": [
+        "Pages with visual differences: [1, 4, 5]. Check diff images in renders\\diffs.",
+        "Common causes: wrong margins, different fonts, table borders, or image placement."
+      ]
+    },
+    {
+      "name": "Text Content",
+      "passed": true,
+      "score": 0.8969,
+      "details": "Token recall=89.7%. PDF words=2681, DOCX words=2581.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Layout (pages, orientation, size)",
+      "passed": true,
+      "score": 1.0,
+      "details": "PDF pages=7, orientation=portrait, issues=none.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Tables",
+      "passed": false,
+      "score": 0.0,
+      "details": "PDF tables=0 (across 0 pages), DOCX tables=1.",
+      "warnings": [
+        "Table count mismatch: PDF=0, DOCX=1"
+      ],
+      "fix_hints": [
+        "Review table detection in pdf_extract_tables.py and the DOCX builder logic.",
+        "Use pdfplumber for complex tables: pip install pdfplumber"
+      ]
+    },
+    {
+      "name": "Placeholder Tags ([stamp:], [hw:], etc.)",
+      "passed": true,
+      "score": 1.0,
+      "details": "Tags found in DOCX: none. Missing: none.",
+      "warnings": [],
+      "fix_hints": []
+    }
+  ],
+  "total_time_s": 6.61,
+  "verdict": "❌ FAIL — Differences detected. Review fix hints below."
+}

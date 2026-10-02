@@ -1,0 +1,79 @@
+# configs/default.yaml — baseline for all document families.
+# Any document-specific behavior must be a NEW file here, never a new script.
+
+name: default
+description: Safe generic baseline for standard PDFs.
+
+# Used by the inspector to auto-select this config.
+match:
+  languages: [ar, en]
+  has_tables: true
+  has_images: true
+  scanned_ratio_min: 0.0      # matches anything if no better config matches
+
+page:
+  orientation_default: portrait
+  landscape_ranges: []        # e.g. [[10, 41]]
+  margins_mm:
+    top: 15
+    bottom: 15
+    left: 15
+    right: 15
+  size: auto                    # A4 | Letter | A3 | auto
+
+fonts:
+  default: "Arial"
+  fallback: ["Times New Roman", "Aptos", "Noto Sans CJK"]
+  handwriting: "Segoe Script"   # used for [hw: ...] runs
+  size_pt: 9.5
+
+tables:
+  style: "Table Grid"
+  header_fill: "#0070C0"
+  header_font_color: "#FFFFFF"
+  header_bold: true
+  autofit: true
+
+tags:
+  emit:
+    - emblem
+    - redacted
+    - PPD
+    - CCI
+    - logo
+    - signature
+    - initials
+    - stamp
+    - seal
+    - electronic_signature
+    - e-signature
+    - digital_signature
+    - illegible
+    - illegible_section
+    - illegible_line
+    - watermark
+    - icon
+    - cut_off_text
+    - hw
+    - barcode
+    - qr
+    - blank_page
+    - undefined
+  handwriting_header_note: true   # emit [handwritten text is indicated in italics] in Header when file is mostly handwritten
+  hw_italic: true                 # render [hw: ...] payload in *Italic*
+  watermark_in_header: true       # place [watermark: ...] in Header
+
+symbols:
+  use_unicode_forms: true         # ■ □ ● ○ × § № ¼ ½ ⅓ ¾ α β γ x̄ هـ gemäß
+  fallback_ascii: false           # never substitute x for ×, B for β, - for ـ
+
+ocr:
+  engine: rapidocr
+  langs: [ar, en]                 # ISO codes; e.g. [zh, en], [ar, en]
+  dpi: 300
+  min_confidence: 0.60
+
+verification:
+  min_axis_score: 0.85            # QA gate; below → fail
+  dpi_for_render: 150
+  visual_diff_threshold: 0.05     # pixel diff tolerance per page

@@ -1,0 +1,62 @@
+{
+  "original_pdf": "finished\\UG-100-000284526_2-Non-Parsable-en-US#FPREP_DXCGQN#.pdf",
+  "output_docx": "temp\\ug100_perfect.docx",
+  "timestamp": "2026-10-01T16:50:32.934158",
+  "overall_pass": false,
+  "overall_score": 0.8075,
+  "checks": [
+    {
+      "name": "Visual (pixel rendering)",
+      "passed": true,
+      "score": 0.9026,
+      "details": "Compared 2/2 pages (PDF=2, DOCX=2). Avg sim=90.3%, penalized score=90.3%. Failed pages: none.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Text Content",
+      "passed": false,
+      "score": 0.4682,
+      "details": "Token overlap=46.8%. PDF words=387, DOCX words=186.",
+      "warnings": [
+        "Word count diff: PDF=387, DOCX=186 (52% difference)",
+        "Possibly missing key phrase: 'Page'"
+      ],
+      "fix_hints": [
+        "Check for missing sections or truncated content in the DOCX builder.",
+        "Text overlap is low — verify page range coverage and paragraph extraction logic."
+      ]
+    },
+    {
+      "name": "Layout (pages, orientation, size)",
+      "passed": true,
+      "score": 1.0,
+      "details": "PDF pages=2, orientation=portrait, issues=none.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Tables",
+      "passed": false,
+      "score": 0.6667,
+      "details": "PDF tables=2 (across 2 pages), DOCX tables=3.",
+      "warnings": [
+        "Table count mismatch: PDF=2, DOCX=3"
+      ],
+      "fix_hints": [
+        "Review table detection in pdf_extract_tables.py and the DOCX builder logic.",
+        "Use pdfplumber for complex tables: pip install pdfplumber"
+      ]
+    },
+    {
+      "name": "Placeholder Tags ([stamp:], [hw:], etc.)",
+      "passed": true,
+      "score": 1.0,
+      "details": "Tags found in DOCX: none. Missing: none.",
+      "warnings": [],
+      "fix_hints": []
+    }
+  ],
+  "total_time_s": 5.11,
+  "verdict": "❌ FAIL — Differences detected. Review fix hints below."
+}

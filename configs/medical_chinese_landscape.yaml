@@ -1,0 +1,74 @@
+# configs/medical_chinese_landscape.yaml — Chinese Medical & GSK Questionnaire Family (e.g. 263116 SDDD)
+
+name: medical_chinese_landscape
+description: "GSK Chinese Medical Questionnaire & Multipage Lab Reports (263116 SDDD)"
+builder: chinese_medical_builder
+
+match:
+  languages: [zh, en]
+  has_tables: true
+  has_images: true
+  scanned_ratio_min: 0.50
+
+page:
+  orientation_default: landscape
+  landscape_ranges: [[1, 41]]
+  margins_mm:
+    top: 12.7
+    bottom: 12.7
+    left: 12.7
+    right: 12.7
+  size: Letter
+
+fonts:
+  default: "Aptos"
+  fallback: ["Arial", "Noto Sans CJK", "SimSun"]
+  handwriting: "Segoe Script"
+  size_pt: 11
+
+tables:
+  style: "Table Grid"
+  border_color: "#0070C0"
+  header_bold: true
+  autofit: true
+
+tags:
+  emit:
+    - emblem
+    - redacted
+    - PPD
+    - CCI
+    - logo
+    - signature
+    - initials
+    - stamp
+    - seal
+    - electronic_signature
+    - e-signature
+    - digital_signature
+    - illegible
+    - watermark
+    - icon
+    - cut_off_text
+    - hw
+    - barcode
+    - qr
+    - blank_page
+    - undefined
+  handwriting_header_note: false
+  hw_italic: true
+
+symbols:
+  use_unicode_forms: true
+  fallback_ascii: false
+
+ocr:
+  engine: rapidocr
+  langs: [zh, en]
+  dpi: 300
+  min_confidence: 0.60
+
+verification:
+  min_axis_score: 0.85
+  dpi_for_render: 150
+  visual_diff_threshold: 0.15

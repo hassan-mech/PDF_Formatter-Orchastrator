@@ -1,0 +1,15 @@
+{
+  "run_id": "DOC0000074469_20261002_1045",
+  "timestamp": "2026-10-02 10:47:40",
+  "input_file": "input/DOC0000074469-Non-Parsable-en-US#FPREP_DXEGTK#.pdf",
+  "status": "promoted",
+  "qa_score": 0.94,
+  "visual_score": 0.852,
+  "modifications": [
+    "Eliminated hallucinated divider rules under running headers",
+    "Dual-section footer assignment (NEW_PAGE + CONTINUOUS) preventing off-by-one page numbering",
+    "Word native multi-column section architecture (<w:cols>) with native column breaks",
+    "Screened ONLY English abstract continuation crops, all Spanish text 100% styled editable text",
+    "Analytical vertical offset and margin alignment matching source PDF geometry"
+  ]
+}

@@ -1,0 +1,58 @@
+# configs/screen_capture.yaml — Full-page screen-capture embed builder
+# Use when the user wants every PDF page rendered as a pixel-faithful image
+# and embedded in DOCX. No text recreation. Supports mixed orientations.
+
+name: screen_capture
+description: "Full-page screenshot-embed: renders each PDF page as image and embeds in DOCX"
+builder: screen_capture_builder
+
+match:
+  # Applies to any mixed-language, image-heavy, or pixel-faithful-required docs
+  languages: [zh, en, any]
+  has_images: true
+  scanned_ratio_min: 0.0
+
+page:
+  orientation_default: auto          # per-page from PDF
+  size: auto                         # per-page from PDF dimensions
+  margins_mm:
+    top: 0.0
+    bottom: 0.0
+    left: 0.0
+    right: 0.0
+
+capture:
+  dpi: 300                           # render DPI — 300 = print quality, never go below this
+  image_format: png                  # png (lossless) or jpeg
+  jpeg_quality: 95                   # only used if image_format=jpeg
+  fit_to_page: true                  # always true — both width AND height pinned
+  color_space: RGB
+
+fonts:
+  default: "Aptos"
+  fallback: ["Arial"]
+  size_pt: 11
+
+tags:
+  emit: []                           # no tag emission in screen-capture mode
+  hw_italic: false
+
+symbols:
+  use_unicode_forms: true
+  fallback_ascii: false
+
+ocr:
+  engine: rapidocr
+  langs: [zh, en]
+  dpi: 300
+  min_confidence: 0.60
+
+verification:
+  min_axis_score: 0.85
+  dpi_for_render: 150
+  visual_diff_threshold: 0.10        # tighter threshold since pages ARE images
+  # In screen-capture mode the DOCX has no extractable text or Word tables.
+  # Skip those axes — they would always score 0 and are not meaningful here.
+  skip_axes:
+    - text
+    - tables

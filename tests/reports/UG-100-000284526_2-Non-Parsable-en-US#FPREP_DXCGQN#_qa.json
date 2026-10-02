@@ -1,0 +1,54 @@
+{
+  "original_pdf": "input\\UG-100-000284526_2-Non-Parsable-en-US#FPREP_DXCGQN#.pdf",
+  "output_docx": "D:\\Hassan\\Amouna\\Hasssan&Eman\\output\\UG-100-000284526_2-Non-Parsable-en-US#FPREP_DXCGQN#.docx",
+  "timestamp": "2026-10-01T16:48:22.423998",
+  "overall_pass": true,
+  "overall_score": 0.9729,
+  "checks": [
+    {
+      "name": "Visual (pixel rendering)",
+      "passed": true,
+      "score": 0.8643,
+      "details": "Compared 2/2 pages (PDF=2, DOCX=2). Avg sim=86.4%, penalized score=86.4%. Failed pages: [1, 2].",
+      "warnings": [],
+      "fix_hints": [
+        "Pages with visual differences: [1, 2]. Check diff images in renders\\diffs.",
+        "Common causes: wrong margins, different fonts, table borders, or image placement."
+      ]
+    },
+    {
+      "name": "Text Content",
+      "passed": true,
+      "score": 1.0,
+      "details": "Token overlap=100.0%. PDF words=387, DOCX words=386.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Layout (pages, orientation, size)",
+      "passed": true,
+      "score": 1.0,
+      "details": "PDF pages=2, orientation=portrait, issues=none.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Tables",
+      "passed": true,
+      "score": 1.0,
+      "details": "PDF tables=2 (across 2 pages), DOCX tables=2.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Placeholder Tags ([stamp:], [hw:], etc.)",
+      "passed": true,
+      "score": 1.0,
+      "details": "Tags found in DOCX: none. Missing: none.",
+      "warnings": [],
+      "fix_hints": []
+    }
+  ],
+  "total_time_s": 5.0,
+  "verdict": "✅ PASS — DOCX faithfully matches the original PDF."
+}

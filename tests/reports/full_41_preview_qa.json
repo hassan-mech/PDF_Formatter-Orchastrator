@@ -1,0 +1,54 @@
+{
+  "original_pdf": "finished\\263116 SDDD-Non-Parsable-en-US#FMT_GYRCPJ#-Non-Parsable-en-US#FPREP_DXCGLP#.pdf",
+  "output_docx": "temp\\full_41_preview.docx",
+  "timestamp": "2026-10-01T17:43:36.285573",
+  "overall_pass": true,
+  "overall_score": 0.9471,
+  "checks": [
+    {
+      "name": "Visual (pixel rendering)",
+      "passed": true,
+      "score": 0.8965,
+      "details": "Compared 41/41 pages (PDF=41, DOCX=41). Avg sim=89.7%, penalized score=89.7%. Failed pages: [1, 6].",
+      "warnings": [],
+      "fix_hints": [
+        "Pages with visual differences: [1, 6]. Check diff images in renders\\diffs.",
+        "Common causes: wrong margins, different fonts, table borders, or image placement."
+      ]
+    },
+    {
+      "name": "Text Content",
+      "passed": true,
+      "score": 0.8532,
+      "details": "Token recall=85.3%. PDF words=1583, DOCX words=5176.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Layout (pages, orientation, size)",
+      "passed": true,
+      "score": 1.0,
+      "details": "PDF pages=41, orientation=landscape, issues=none.",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Tables",
+      "passed": true,
+      "score": 0.9859,
+      "details": "PDF tables=7 (digital) + 32 scanned pages with reconstructed tables, DOCX tables=71 (valid: 70).",
+      "warnings": [],
+      "fix_hints": []
+    },
+    {
+      "name": "Placeholder Tags ([stamp:], [hw:], etc.)",
+      "passed": true,
+      "score": 1.0,
+      "details": "Tags found in DOCX: ['[PPD]', '[signature]', '[hw:']. Missing: none.",
+      "warnings": [],
+      "fix_hints": []
+    }
+  ],
+  "total_time_s": 17.13,
+  "verdict": "✅ PASS — DOCX faithfully matches the original PDF."
+}

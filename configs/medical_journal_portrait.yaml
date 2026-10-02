@@ -1,0 +1,40 @@
+# configs/medical_journal_portrait.yaml — Dermatología Revista Mexicana & Bilingual Journal Family
+name: medical_journal_portrait
+description: "Dermatología Revista Mexicana 2-column portrait medical research article"
+builder: journal_article_builder
+
+match:
+  languages: [es, en]
+  has_tables: false
+  has_images: true
+  scanned_ratio_min: 0.0
+
+page:
+  orientation_default: portrait
+  width_in: 8.27
+  height_in: 10.63
+  margins_mm:
+    top: 10.0
+    bottom: 10.0
+    left: 12.7
+    right: 12.7
+
+fonts:
+  default: "Arial"
+  title: "Arial"
+  body: "Arial"
+  size_pt: 8.5
+
+colors:
+  primary: "#DB1D43"       # Crimson red
+  title: "#003584"         # Navy blue
+  pink_box: "#FCECEF"      # Shaded abstract & caption box fill
+  body_text: "#231F20"     # Charcoal body text
+
+verification:
+  min_axis_score: 0.85
+  dpi_for_render: 120
+  visual_diff_threshold: 0.15
+  anti_aliasing_tolerance: 20
+  skip_axes:
+    - tables

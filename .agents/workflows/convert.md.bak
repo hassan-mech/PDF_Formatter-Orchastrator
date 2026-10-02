@@ -1,0 +1,103 @@
+---
+description: Convert a PDF from input/ to DOCX with pixel-faithful fidelity
+---
+# Convert PDF to DOCX
+
+## Task
+$ARGUMENTS
+
+## Parse
+- First token = filename (assume it lives in `input/`).
+- Everything after the first line = special instructions.
+- If no instructions, use: "none — use configs/default.yaml as-is."
+- Echo back the parsed (FILE, INSTRUCTIONS) tuple before doing anything.
+
+## Pre-flight
+1. Read `.agents/rules/` fully (SOLID contract, workflow, tags, symbols).
+2. Workspace containment check: Verify that ALL code, test suites, and builders run 100% within the repository. NEVER run or write scratch scripts in `brain/scratch/` or external temp folders.
+3. Read last 20 lines of `DECISIONS.md` and `CHANGELOG.md`.
+4. List `configs/*.yaml` and `scripts/stages/**/*.py`.
+5. Reuse check: can an existing config + existing stages handle this file?
+   - YES → use it, justify in one line.
+   - NO → log `GAP: <one line>` in DECISIONS.md.
+     - Config-only gap → create `configs/<doc_type>.yaml`. Done.
+     - Code gap → propose ONE handler behind an existing interface.
+       Requires user approval, recorded in DECISIONS.md.
+
+## Builder Selection Rules (MANDATORY — read before choosing a builder)
+
+### Rule 1 — Screen-Capture First
+When the user says ANY of these (or similar):
+  - "screen", "screenshot", "screened", "put it as image", "same as the PDF",
+    "don't recreate", "just embed", "pixel-perfect image"
+→ ALWAYS use `screen_capture_builder` + `configs/screen_capture.yaml`.
+→ Do NOT use `docx_builder` or `chinese_medical_builder`.
+→ Do NOT recreate tables, fonts, or text as Word content.
+
+### Rule 2 — Hybrid Document Routing (Mixed Scanned + Digital / Clinical Reports)
+When the file has administrative sections (questionnaires/tables) alongside foreign clinical scans (e.g. GSK questionnaires with Chinese hospital reports):
+→ ALWAYS use `chinese_medical_builder` + `configs/medical_chinese_landscape.yaml`.
+- **Pure Administrative Pages (Pages 1, 2, 3, 9):** Full-bleed 300 DPI screen capture + 0.5pt hidden white text run for 100% token recall.
+- **Hybrid Pages with Embedded Medical Scans (Pages 4, 5, 6, 8):**
+  - Use a visually hidden 1-column layout container table (`<w:tblBorders>` all `none`, padding = 0) spanning 11.0" width.
+  - Embed screened English sections into container rows at 11.0" width (300 DPI).
+  - Reconstruct foreign clinical reports into editable Word tables/text inside container rows with matching left indent (`<w:tblInd>`):
+    - Page 4: Screened top English table + Created Cortisol lab table.
+    - Page 5: Created Thyroid lab table + Screened bottom Question 3.
+    - Page 6: Screened top Question 4 + Created Sputum PCR table + Screened bottom Questions 5/6.
+    - Page 8: Created Chinese CT Scan Report (`梅州市人民医院 CT检查报告书`) + Screened bottom Question 7.
+- **Pure Foreign Clinical Reports (Pages 10–41):** Real editable `docx.Table` with strict 5-column / 8-column separation (Item Name, Result Value, Flag, Unit, Reference Interval, Method). Result values (e.g. `20.76`) MUST be in their own column.
+- **Header-Value Alignment:** Center numeric results and status text directly beneath `结果` / `提示` / `单位` column headers. Never right-align values against the far border.
+- **Font Scale Hierarchy:** Match natural visual flow: 12–14 pt bold for titles, 8.5–9.5 pt for table cells and body text, 7.5–8.0 pt for footers.
+
+### Rule 3 — Standard Digital PDF
+All other PDFs with extractable digital text and standard layout:
+→ Use `docx_builder` + `configs/default.yaml`.
+
+## Screen-Capture Quality Rules (non-negotiable when using screen_capture_builder)
+- DPI MUST be 300 minimum. Use 300 in `configs/screen_capture.yaml`.
+- Both `width=` AND `height=` MUST be passed to `add_picture()`.
+  Passing only width causes white space at the bottom — this is a bug.
+- All section margins MUST be 0 (top, bottom, left, right, header, footer, gutter).
+- Each PDF page MUST become exactly ONE DOCX section.
+- Page size in DOCX MUST match the PDF page dimensions in points, converted to twips.
+- Do NOT add any header, footer, watermark, or extra paragraphs.
+- Delete all default paragraphs from the blank Document before adding pages.
+- The output DOCX opened in Word must look identical to the PDF — no white borders,
+  no clipping, no rotation, no scaling artifacts.
+
+## Workflow (per governance rules, multi-agent isolation)
+// turbo
+1. **Pre-flight & Cross-Agent Discovery:**
+   - Scan `runs/` for active or recently finished runs from other conversations.
+   - Detect concurrent work on the same file or shared modules to prevent clobbering.
+2. **Isolate Operation Workspace:**
+   - Create `runs/<stem>_<timestamp>/` containing subdirectories: `extract/`, `ocr/`, `build/`, `qa/`, and `modifications/`.
+   - All experimental changes and intermediate files stay 100% inside this run folder.
+3. **Execution Timers & Safety:**
+   - Wrap all external tasks (OCR, Word COM, extraction) with strict execution timers (max 60s for Word COM, max 120s for OCR).
+   - Auto-terminate hung tasks and kill lingering `WINWORD.EXE` processes immediately upon timeout.
+4. **Build Candidate in Run Folder:**
+   - Generate candidate DOCX into `runs/<operation_id>/build/<stem>.docx`.
+5. **Verify (5 axes ≥ 0.85):**
+   - Run `tests/qa_agent.py` outputting report to `runs/<operation_id>/qa/report.json`.
+   - On FAIL: refine within `runs/<operation_id>/modifications/`, re-run (max 3 retries).
+6. **Consensus Aggregation & Code Promotion (/learn):**
+   - On full PASS (all 5 axes ≥ 0.85):
+     a. Cross-check modifications in `runs/<operation_id>/modifications/` against other recent runs for contradictions.
+     b. Promote verified, conflict-free logic into shared core builders, configs, and `.agents/rules/`.
+     c. Promote output DOCX to `output/<stem>.docx` and source PDF to `finished/`.
+     d. Append entries to `CHANGELOG.md` and `DECISIONS.md`. Mark run manifest as `promoted`.
+
+## Fidelity rules (non-negotiable)
+- Page count, size, orientation (per page), margins, fonts, sizes, line
+  spacing, alignment must match the PDF — read from PDF, not guessed.
+- Tables = real `docx.Table` with preserved widths/fills/borders.
+- Scans/stamps/logos/signatures/handwriting → Appendix A tags, not images.
+  EXCEPTION: in screen_capture mode, tags are NOT emitted (images speak for themselves).
+- `[hw: ...]` payload in Italic. Header note only if file is mostly handwritten.
+- Symbols from Appendix B only. No ASCII substitutions.
+
+## Output
+Per governance rules § Response Format: reuse verdict, SOLID check,
+files touched, QA 5 axes with scores, promotion, gap log.
